@@ -59,8 +59,8 @@ export const App: React.FC = ({}) => {
 
       {/* Move this markup to Pagination */}
       <Pagination
-       total={total}
-       perPage={perPage}
+        total={total}
+        perPage={perPage}
         currentPage={currentPage}
         onPageChange={onPageChange}
       />
