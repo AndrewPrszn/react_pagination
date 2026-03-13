@@ -1,19 +1,25 @@
 type Props = {
-  pages: number[];
+  total: number;
+  perPage: number;
   currentPage: number;
-  isFirstPage: boolean;
   onPageChange: (page: number) => void;
 };
 
 export const Pagination: React.FC<Props> = ({
-  pages,
+  total,
+  perPage,
   currentPage,
-  isFirstPage,
   onPageChange,
 }) => {
+  const totalPages = Math.ceil(total / perPage);
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
+
   return (
     <ul className="pagination">
-      {/* Prev link */}
+      {/* Prev */}
       <li className={isFirstPage ? "page-item disabled" : "page-item"}>
         <a
           data-cy="prevLink"
@@ -32,8 +38,8 @@ export const Pagination: React.FC<Props> = ({
       {/* Page numbers */}
       {pages.map((page) => (
         <li
-          className={page === currentPage ? "page-item active" : "page-item"}
           key={page}
+          className={page === currentPage ? "page-item active" : "page-item"}
         >
           <a
             data-cy="pageLink"
@@ -41,7 +47,7 @@ export const Pagination: React.FC<Props> = ({
             href={`#${page}`}
             onClick={(e) => {
               e.preventDefault();
-              onPageChange(page);
+              if (page !== currentPage) onPageChange(page);
             }}
           >
             {page}
@@ -49,20 +55,16 @@ export const Pagination: React.FC<Props> = ({
         </li>
       ))}
 
-      {/* Next link */}
-      <li
-        className={
-          currentPage === pages.length ? "page-item disabled" : "page-item"
-        }
-      >
+      {/* Next */}
+      <li className={isLastPage ? "page-item disabled" : "page-item"}>
         <a
           data-cy="nextLink"
           className="page-link"
           href="#next"
-          aria-disabled={currentPage === pages.length}
+          aria-disabled={isLastPage}
           onClick={(e) => {
             e.preventDefault();
-            if (currentPage !== pages.length) onPageChange(currentPage + 1);
+            if (!isLastPage) onPageChange(currentPage + 1);
           }}
         >
           »

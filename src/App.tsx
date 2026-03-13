@@ -17,14 +17,10 @@ export const App: React.FC = ({}) => {
   const [perPage, setPerPage] = React.useState(5);
   const total = items.length;
 
-  const totalPages = Math.ceil(total / perPage);
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-
   const onPageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const isFirstPage = currentPage === 1;
   const startIndex = (currentPage - 1) * perPage;
   const endIndex = startIndex + perPage;
 
@@ -63,9 +59,9 @@ export const App: React.FC = ({}) => {
 
       {/* Move this markup to Pagination */}
       <Pagination
-        pages={pages}
+       total={total}
+       perPage={perPage}
         currentPage={currentPage}
-        isFirstPage={isFirstPage}
         onPageChange={onPageChange}
       />
 
